@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # StableCoin Project
 
 ## Overview
