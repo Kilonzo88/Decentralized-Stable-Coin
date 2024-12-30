@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # StableCoin Project
 
 ## Overview
@@ -112,3 +113,4 @@ We welcome contributors to the StableCoin Project!
 
 ## License
 This project is licensed under the MIT License. See `LICENSE` for details.
+
