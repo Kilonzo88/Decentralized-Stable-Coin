@@ -1,26 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-// Layout of Contract:
-// version
-// imports
-// interfaces, libraries, contracts
-//errors
-// Type declarations
-// State variables
-// Events
-// Modifiers
-// Functions
-
-// Layout of Functions:
-// constructor
-// receive function (if exists)
-// fallback function (if exists)
-// external
-// public
-// internal
-// private
-// view & pure functions
-
 pragma solidity ^0.8.19;
 
 import {DecentralizedStableCoin} from "./DecentralizedStableCoin.sol";
@@ -47,9 +26,9 @@ import {OracleLib} from "src/libraries/OracleLib.sol";
  * @notice This contract is lossely based on the MAkerDAO DSS (DAI) system.
  */
 contract DSCEngine is ReentrancyGuard{
-    //////////////////////////////////
-    //Errors //
-    //////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                                 ERRORS
+    //////////////////////////////////////////////////////////////*/
     error DSCEngine__NeedsMoreThanZero();
     error DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeOfSameLength();
     error DSCEngine__NotAllowedToken();
@@ -60,14 +39,14 @@ contract DSCEngine is ReentrancyGuard{
     error DSCEngine__HealthFactorIsNotImproved();
     error DSCEngine__HealthFactorOk();
 
-    //////////////////////////////////
-    //Types//
-    //////////////////////////////////
+   /*//////////////////////////////////////////////////////////////
+                                 ERRORS
+    //////////////////////////////////////////////////////////////*/
     using OracleLib for AggregatorV3Interface;
 
-    //////////////////////////////////
-    //State Variables  //
-    //////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                            STATE VARIABLES
+    //////////////////////////////////////////////////////////////*/
     uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
     uint256 private constant PRECISION = 1e18;
     uint256 private constant LIQUIDATION_THRESHOLD = 50; //200% overcollateralized
@@ -82,18 +61,18 @@ contract DSCEngine is ReentrancyGuard{
 
     DecentralizedStableCoin private immutable i_dsc;
 
-    ////////////////////////////////// 
-    //Events  //
-    //////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
     event CollateralDeposited(
         address indexed user, address indexed tokenCollateralAddress, uint256 indexed amountCollateral
     );
 
     event CollateralRedeemed(address indexed redeemedFrom, address indexed redeemedTo, address indexed tokenCollateralAddress, uint256 amountCollateral);
 
-    ///////////////////////////////////
-    //Modifier  //
-    ///////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                                MODIFIER
+    //////////////////////////////////////////////////////////////*/
     modifier moreThanZero(uint256 amount) {
         if (amount == 0) {
             revert DSCEngine__NeedsMoreThanZero();
@@ -109,9 +88,9 @@ contract DSCEngine is ReentrancyGuard{
         _;
     }
 
-    //////////////////////////////////
-    //Functions //////////////////////
-    //////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
     constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress) {
         if (tokenAddresses.length != priceFeedAddresses.length) {
             revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeOfSameLength();
@@ -125,9 +104,9 @@ contract DSCEngine is ReentrancyGuard{
         i_dsc = DecentralizedStableCoin(dscAddress);
     }
 
-    //////////////////////////////////
-    //EXternal Functions //
-    //////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                           EXTERNAL FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
 
     /*
      * @param atokenCollateralAddress The address of the token to be deposited as collateral
@@ -238,9 +217,9 @@ contract DSCEngine is ReentrancyGuard{
         _revertIfHealthFactorIsBroken(msg.sender);
     }
 
-    /////////////////////////////////////
-    //Private and Internal Functions //
-    /////////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
+                     PRIVATE AND INTERNAL FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
       /**
      * @dev Low-level internal function, do not call unless function calling 
      * it is checking for health factors being broken amount
@@ -296,10 +275,11 @@ contract DSCEngine is ReentrancyGuard{
         return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
     }
 
-    /////////////////////////////////////
-    //Public & External View Functions //
-    /////////////////////////////////////
-     function getHealthFactor(address user) external view returns(uint256) {
+    /*//////////////////////////////////////////////////////////////
+                   PUBLIC AND EXTERNAL VIEW FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+
+    function getHealthFactor(address user) external view returns(uint256) {
         return _calculateHealthFactor(user);
      }
 
