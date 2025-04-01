@@ -16,12 +16,14 @@ contract Handler is Test {
 
     ERC20Mock weth;
     ERC20Mock wbtc;
+    ERC20Mock whbar;
 
     uint256 MAX_DEPOSIT_SIZE = type(uint96).max;
     uint256 public timesMintIsCalled; //Ghost variable
     address [] public usersWithCollateralDeposited;
     MockV3Aggregator public ethUsdPriceFeed;
-    //MockV3Aggregator public btcUsdPriceFeed;
+    MockV3Aggregator public btcUsdPriceFeed;
+    MockV3Aggregator public hbarUsdPriceFeed;
 
 
     constructor(DSCEngine _dscEngine, DecentralizedStableCoin _dsc) {
@@ -31,9 +33,11 @@ contract Handler is Test {
         address [] memory collateralTokens = dscEngine.getCollateralTokens();
         weth = ERC20Mock(collateralTokens[0]);
         wbtc = ERC20Mock(collateralTokens[1]);
+        whbar = ERC20Mock(collateralTokens[2]);
 
         ethUsdPriceFeed = MockV3Aggregator(dscEngine.getCollateralTokenPriceFeed(address(weth)));
-        //btcUsdPriceFeed = MockV3Aggregator(dscEngine.getCollateralTokenPriceFeed(address(wbtc)));
+        btcUsdPriceFeed = MockV3Aggregator(dscEngine.getCollateralTokenPriceFeed(address(wbtc)));
+        hbarUsdPriceFeed = MockV3Aggregator(dscEngine.getCollateralTokenPriceFeed(address(whbar)));
     
     }
 

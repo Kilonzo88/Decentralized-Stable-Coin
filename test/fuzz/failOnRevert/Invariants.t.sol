@@ -23,13 +23,14 @@ contract Invariant is StdInvariant, Test {
     HelperConfig config;
     address weth;
     address wbtc;
+    address whbar;
     Handler handler;
 
     function setUp() external {
         deployer = new DeployDSC();
         (dsc, dscEngine, config) = deployer.run();
-        (,, weth, wbtc,) = config.activeNetworkConfig();
-        //targetContract(address(dscEngine));
+        (,, weth, wbtc,whbar,,) = config.activeNetworkConfig();
+        targetContract(address(dscEngine));
         handler = new Handler(dscEngine, dsc);
         targetContract(address(handler));
 

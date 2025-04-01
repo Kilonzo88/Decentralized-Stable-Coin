@@ -19,6 +19,8 @@ contract DSCEngineTest is Test {
     HelperConfig config;
     address ethUsdPriceFeed;
     address btcUsdPriceFeed;
+    address hbarUsdPriceFeed;
+    address whbar;
     address weth;
     address wbtc;
     address [] public tokenAddresses;
@@ -39,7 +41,7 @@ contract DSCEngineTest is Test {
     function setUp() public {
         deployer = new DeployDSC();
         (dsc, dscEngine, config) = deployer.run();
-        (ethUsdPriceFeed, btcUsdPriceFeed, weth, wbtc,) = config.activeNetworkConfig();
+        (ethUsdPriceFeed, btcUsdPriceFeed, hbarUsdPriceFeed, weth, wbtc, whbar,) = config.activeNetworkConfig();
 
         ERC20Mock(weth).mint(USER, AMOUNT_COLLATERAL);
     }
